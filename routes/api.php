@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\StudentController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +26,39 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('/students')->group(function () {
         Route::get('/', [StudentController::class, 'index']);
-        Route::get('/{student}', [StudentController::class, 'show']);
         Route::post('/', [StudentController::class, 'store'])->middleware('checkUserLevel:a|m');
-        Route::patch('/{student}', [StudentController::class, 'update'])->middleware('checkUserLevel:a|m');
-        Route::delete('/{student}', [StudentController::class, 'delete'])->middleware('checkUserLevel:a|m');
+
+        Route::prefix('/{student}')->group(function () {
+            Route::get('/', [StudentController::class, 'show']);
+            Route::patch('/', [StudentController::class, 'update'])->middleware('checkUserLevel:a|m');
+            Route::delete('/', [StudentController::class, 'destroy'])->middleware('checkUserLevel:a|m');
+        });
+    });
+
+    Route::prefix('/invitations')->group(function () {
+        Route::get('/', [InvitationController::class, 'index']);
+        Route::post('/', [InvitationController::class, 'store'])->middleware('checkUserLevel:a|m');
+
+        Route::prefix('/{invitation}')->group(function () {
+            Route::get('/', [InvitationController::class, 'show']);
+            Route::delete('/', [InvitationController::class, 'destroy'])->middleware('checkUserLevel:a|m');
+        });
+    });
+
+    Route::prefix('/panels')->group(function () {
+        Route::get('/', [InvitationController::class, 'index']);
+        Route::post('/', [InvitationController::class, 'store'])->middleware('checkUserLevel:a|m');
+
+        Route::prefix('/{panel}')->group(function () {
+            Route::get('/', [InvitationController::class, 'show']);
+            Route::patch('/', [StudentController::class, 'update'])->middleware('checkUserLevel:a|m');
+            Route::delete('/', [InvitationController::class, 'destroy'])->middleware('checkUserLevel:a|m');
+
+            Route::prefix('/users')->group(function () {
+                Route::get('/', [InvitationController::class, 'indexUsers']);
+                Route::post('/', [InvitationController::class, 'addUser'])->middleware('checkUserLevel:a|m');
+                Route::delete('/{user}', [InvitationController::class, 'removeUser'])->middleware('checkUserLevel:a|m');
+            });
+        });
     });
 });
