@@ -11,16 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
+        Schema::create('tests', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('batch_id');
             $table->unsignedBigInteger('center_id');
-            $table->string('name');
-            $table->string('email')->unique()->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('whatsapp')->nullable();
+            $table->string('name')->unique();
             $table->timestamps();
-            $table->primary('id');
             $table->foreign('batch_id')
                 ->references('id')
                 ->on('batches')
@@ -37,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::dropIfExists('tests');
     }
 };

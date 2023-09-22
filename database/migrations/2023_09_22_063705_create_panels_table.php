@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('centers', function (Blueprint $table) {
+        Schema::create('panels', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable(false);
-            $table->string('district')->nullable(false);
+            $table->char('year', length: 4);
+            $table->string('district');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('centers');
+        Schema::dropIfExists('panels');
     }
 };

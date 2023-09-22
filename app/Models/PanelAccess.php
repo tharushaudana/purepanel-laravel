@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends Model
+class PanelAccess extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'panel_id',
+        'user_id'
     ];
 }
