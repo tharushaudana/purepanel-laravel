@@ -11,7 +11,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'district_id' => ['required', 'integer', 'exists:districts,id'],
+            'year' => ['required', 'integer', 'min:'.date('Y'), 'max:'.(date('Y')+1)]
         ];
     }
 }

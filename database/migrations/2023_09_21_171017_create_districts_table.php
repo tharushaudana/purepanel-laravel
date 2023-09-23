@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('panels', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('district_id');
-            $table->char('year', length: 4);
+            $table->string('name');
             $table->timestamps();
-            $table->foreign('district_id')
-                ->references('id')
-                ->on('districts')
-                ->onDelete('cascade');
         });
     }
 
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('panels');
+        Schema::dropIfExists('districts');
     }
 };

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id')->nullable();
-            $table->char('level', length: 1)->default('g'); // a: admin | m: moderator | g: general
+            $table->char('level', length: 1)->default('g'); // a: admin | m: moderator | l: leader | g: general
             $table->string('name');
             $table->string('email')->unique();
             $table->string('mobile')->nullable();

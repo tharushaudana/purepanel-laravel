@@ -30,7 +30,7 @@ class ResponseServiceProvider extends ServiceProvider
             return $factory->make($format);
         });
 
-        $factory->macro('error', function (string $message = null, $status = 200, $errors = null) use ($factory) {
+        $factory->macro('error', function (string $message = null, $status = 400, $errors = null) use ($factory) {
             $format = [
                 'status' => 'error',
                 'message' => $message,

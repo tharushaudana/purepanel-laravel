@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('centers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('district_id');
             $table->string('name')->nullable(false);
-            $table->string('district')->nullable(false);
             $table->timestamps();
+            $table->foreign('district_id')
+                ->references('id')
+                ->on('districts')
+                ->onDelete('cascade');
         });
     }
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('panel_id');
+            $table->char('level', length: 1)->default('g'); // l: leader | g: general
             $table->boolean('accepted')->default(0);
             $table->timestamps();
             $table->foreign('student_id')
