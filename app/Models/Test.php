@@ -12,6 +12,7 @@ class Test extends Model
     protected $fillable = [
         'batch_id',
         'center_id',
-        'name'
+        'name',
+        'held_on'
     ];
 }

@@ -25,6 +25,10 @@ class CheckUserAccessTo
             case 'panel':
                 $access = $this->checkAccessToPanel($request);
                 break;
+
+            case 'center':
+                $access = $this->checkAccessToCenter($request);
+                break;
             
             default:
                 $access = true;
@@ -39,5 +43,10 @@ class CheckUserAccessTo
     private function checkAccessToPanel(Request $request) {
         $panel = $request->route('panel');
         return Auth::user()->hasAccessToPanel($panel->id);
+    }
+
+    private function checkAccessToCenter(Request $request) {
+        $center = $request->route('center');
+        return Auth::user()->hasAccessToCenter($center->id);
     }
 }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('batch_id');
             $table->unsignedBigInteger('center_id');
-            $table->string('name')->unique();
+            $table->string('name');
+            $table->date('held_on');
             $table->timestamps();
             $table->foreign('batch_id')
                 ->references('id')

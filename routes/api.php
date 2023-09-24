@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CenterController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +61,38 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
                 Route::get('/', [PanelController::class, 'showUsers']);
                 Route::post('/', [PanelController::class, 'addUser'])->middleware('checkUserLevel:a|m|l');
                 Route::delete('/{user}', [PanelController::class, 'removeUser'])->middleware('checkUserLevel:a|m|l');
+            });
+        });
+    });
+
+    Route::prefix('/centers')->group(function () {
+        Route::get('/', [CenterController::class, 'index']);
+        Route::post('/', [CenterController::class, 'store'])->middleware('checkUserLevel:a|m');
+
+        Route::group(['prefix' => '/{center}', 'middleware' => ['checkUserAccessTo:center']], function () {
+            Route::get('/', [CenterController::class, 'show']);
+            Route::patch('/', [CenterController::class, 'update'])->middleware('checkUserLevel:a|m');
+            Route::delete('/', [CenterController::class, 'destroy'])->middleware('checkUserLevel:a|m');
+
+            Route::prefix('/tests')->group(function () {
+                Route::get('/', [TestController::class, 'index']);
+                Route::post('/', [TestController::class, 'store'])->middleware('checkUserLevel:a|m|l');
+
+                Route::prefix('/{test}')->group(function () {
+                    Route::get('/', [TestController::class, 'show']);
+                    Route::delete('/', [TestController::class, 'destroy'])->middleware('checkUserLevel:a|m|l');
+
+                    Route::prefix('/marks')->group(function () {
+                        Route::get('/', [TestController::class, 'showMarks'])->middleware('checkUserLevel:a|m|l');
+                        Route::get('/my', [TestController::class, 'showMyMarks']);
+                        Route::post('/', [TestController::class, 'addMark']);
+
+                        Route::prefix('/of/{student}')->group(function () {
+                            Route::get('/', [TestController::class, 'showMark']);
+                            Route::delete('/', [TestController::class, 'destroyMark']);
+                        });
+                    });
+                });
             });
         });
     });

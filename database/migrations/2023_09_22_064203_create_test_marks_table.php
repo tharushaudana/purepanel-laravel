@@ -16,8 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('test_id');
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('panel_id');
-            $table->unsignedInteger('marks');
+            $table->unsignedInteger('mark');
             $table->boolean('recorrected')->default(0);
             $table->timestamps();
             $table->foreign('test_id')
@@ -31,10 +30,6 @@ return new class extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
-            $table->foreign('panel_id')
-                ->references('id')
-                ->on('panels')
                 ->onDelete('cascade');
         });
     }

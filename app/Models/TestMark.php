@@ -13,8 +13,7 @@ class TestMark extends Model
         'test_id',
         'student_id',
         'user_id',
-        'panel_id',
-        'marks',
+        'mark',
         'recorrected'
     ];
 }

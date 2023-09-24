@@ -45,6 +45,32 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /*################################ Centers ###############################*/
+
+    public function getCenters() {
+        $centerIds = $this->getCenterIds();
+        return Center::whereIn('id', $centerIds)->get();
+    }
+
+    public function hasAccessToCenter($id) {
+        $centerIds = $this->getPanelIds();
+        return in_array($id, $centerIds);
+    }
+
+    private function getCenterIds() {
+        $panels = $this->getPanels();
+
+        $centerIds = [];
+
+        foreach ($panels as $panel) {
+            array_push($centerIds, $panel->district_id);
+        }
+
+        return $centerIds;
+    }
+
+    /*################################ Panels ###############################*/
+
     public function getPanels() {
         $panelIds = $this->getPanelIds();
         return Panel::whereIn('id', $panelIds)->get();
@@ -53,11 +79,6 @@ class User extends Authenticatable
     public function hasAccessToPanel($id) {
         $panelIds = $this->getPanelIds();
         return in_array($id, $panelIds);
-    }
-
-    public function hasLevel($levels) {
-        $levels = explode('|', $levels);
-        return in_array($this->level, $levels);
     }
 
     private function getPanelIds() {
@@ -70,5 +91,12 @@ class User extends Authenticatable
         }
 
         return $panelIds;
+    }
+
+    /*################################ Level ###############################*/
+
+    public function hasLevel($levels) {
+        $levels = explode('|', $levels);
+        return in_array($this->level, $levels);
     }
 }

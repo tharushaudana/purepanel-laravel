@@ -18,9 +18,9 @@ class StudentController extends Controller
     public function store(StoreRequest $request)
     {
         $student = new Student($request->validated());
-        $currentBatch = Batch::currentBatch()->id;
+        //$currentBatch = Batch::currentBatch()->id;
 
-        $student->batch_id = $currentBatch;
+        //$student->batch_id = $currentBatch;
 
         $student->save();
 
