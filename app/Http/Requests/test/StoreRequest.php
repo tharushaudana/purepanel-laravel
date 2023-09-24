@@ -24,6 +24,7 @@ class StoreRequest extends FormRequest
         return [
             'batch_id' => ['required', 'integer', 'exists:batches,id'],
             'name' => ['required', 'string'],
+            'type' => ['required', 'string', 'in:T,R'],
             'held_on' => ['required', 'date_format:Y-m-d']
         ];
     }

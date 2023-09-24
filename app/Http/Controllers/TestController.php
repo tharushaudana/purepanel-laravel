@@ -9,8 +9,6 @@ use App\Models\Center;
 use App\Models\Student;
 use App\Models\Test;
 use App\Models\TestMark;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TestController extends Controller
@@ -31,8 +29,6 @@ class TestController extends Controller
 
     public function addMark(AddMarkRequest $request, Center $center, Test $test)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
         $student_id = $request->get('student_id');
         $test_id = $test->id;
 
@@ -52,34 +48,24 @@ class TestController extends Controller
 
     public function show(Center $center, Test $test)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
         return response()->success(['test' => $test]);
     }
 
     public function showMarks(Center $center, Test $test)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
-        $marks = TestMark::where('test_id', $test->id)->orderBy('mark', 'DESC')->get();
-
+        $marks = $test->marks;
         return response()->success(['marks' => $marks]);
     }
 
     public function showMyMarks(Center $center, Test $test)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
         $user_id = Auth::user()->id;
-
         $marks = TestMark::where('test_id', $test->id)->where('user_id', $user_id)->orderBy('id', 'DESC')->get();
-        
         return response()->success(['marks' => $marks]);
     }
 
     public function showMark(Center $center, Test $test, Student $student)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
         $mark = TestMark::where('test_id', $test->id)->where('student_id', $student->id)->first();
 
         if (is_null($mark)) {
@@ -96,16 +82,12 @@ class TestController extends Controller
 
     public function destroy(Center $center, Test $test)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
         $test->delete();
         return response()->success(null, 'Successfully deleted.');
     }
 
     public function destroyMark(Center $center, Test $test, Student $student)
     {
-        $this->checkIsTestOfGivenCenter($center, $test);
-
         $mark = TestMark::where('test_id', $test->id)->where('student_id', $student->id)->first();
 
         if (is_null($mark)) {
@@ -119,9 +101,5 @@ class TestController extends Controller
         $mark->delete();
 
         return response()->success(null, 'Successfully deleted.');
-    }
-
-    private function checkIsTestOfGivenCenter(Center $center, Test $test) {
-        if ($test->center_id != $center->id) throw new ModelNotFoundException;
     }
 }

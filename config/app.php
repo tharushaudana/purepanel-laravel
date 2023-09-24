@@ -170,6 +170,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         // For: response->success() and response->error()
         App\Providers\ResponseServiceProvider::class,
+        // For: DOMPDF
+        Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -185,6 +187,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ])->toArray(),
 
 ];

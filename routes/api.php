@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 /**** Public routes ****/
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::get('/test', [ReportController::class, 'test']);
 
 /**** Protected routes (Authenticated) ****/
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -78,9 +81,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
                 Route::get('/', [TestController::class, 'index']);
                 Route::post('/', [TestController::class, 'store'])->middleware('checkUserLevel:a|m|l');
 
-                Route::prefix('/{test}')->group(function () {
+                //Route::prefix('/{test}')->group(function () {
+                Route::group(['prefix' => '/{test}', 'middleware' => ['checkHasRelation:test,center']], function () {
                     Route::get('/', [TestController::class, 'show']);
                     Route::delete('/', [TestController::class, 'destroy'])->middleware('checkUserLevel:a|m|l');
+
+                    Route::get('/report', [ReportController::class, 'downloadPublicMarksReport']);
 
                     Route::prefix('/marks')->group(function () {
                         Route::get('/', [TestController::class, 'showMarks'])->middleware('checkUserLevel:a|m|l');

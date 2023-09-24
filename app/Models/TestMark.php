@@ -16,4 +16,13 @@ class TestMark extends Model
         'mark',
         'recorrected'
     ];
+
+    protected $appends = [
+        'student_name'
+    ];
+
+    protected function getStudentNameAttribute() {
+        $student = Student::find($this->student_id);
+        return $student->name;
+    }
 }

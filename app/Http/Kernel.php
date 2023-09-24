@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         //### Custom middlewares
         'checkUserLevel' => \App\Http\Middleware\CheckUserLevelMiddleware::class,
         'checkUserAccessTo' => \App\Http\Middleware\CheckUserAccessTo::class,
+        'checkHasRelation' => \App\Http\Middleware\CheckHasRelation::class,
     ];
 }

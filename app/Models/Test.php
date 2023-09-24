@@ -12,7 +12,20 @@ class Test extends Model
     protected $fillable = [
         'batch_id',
         'center_id',
+        'type',
         'name',
         'held_on'
     ];
+
+    public function batch() {
+        return $this->belongsTo(Batch::class);
+    }
+
+    public function center() {
+        return $this->belongsTo(Center::class);
+    }
+
+    public function marks() {
+        return $this->hasMany(TestMark::class)->orderBy('mark', 'DESC');
+    }
 }
