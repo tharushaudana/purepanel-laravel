@@ -1,66 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Class Marking Panel API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is an API for class marking panels to manage their tasks, including managing students, managing tests, adding marks, and generating mark reports. This project was built for my pure mathematics sir, Gihan Chamindu's marking panel.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Authentication**: User login and registration.
+- **Student Management**: Add, update, delete, and view students.
+- **Invitation Management**: Send and manage invitations for users to join panels.
+- **Panel Management**: Create and manage panels, add users to panels, and remove users from panels.
+- **Center Management**: Create and manage centers where tests can be conducted.
+- **Test Management**: Create and manage tests, add marks, and generate mark reports.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Endpoints
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Public Routes
 
-## Learning Laravel
+- `POST /login`: User login.
+- `POST /register`: User registration.
+- `GET /test`: Test endpoint.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Protected Routes (Authenticated)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+#### Authentication
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- `POST /logout`: User logout.
 
-## Laravel Sponsors
+#### Students
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- `GET /students`: List all students. *(requires user level `a` or `m`)*
+- `POST /students`: Add a new student. *(requires user level `a` or `m`)*
+- `GET /students/{student}`: View a specific student.
+- `PATCH /students/{student}`: Update a specific student. *(requires user level `a` or `m`)*
+- `DELETE /students/{student}`: Delete a specific student. *(requires user level `a` or `m`)*
 
-### Premium Partners
+#### Invitations
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- `GET /invitations`: List all invitations.
+- `POST /invitations`: Send a new invitation. *(requires user level `a` or `m`)*
+- `GET /invitations/{invitation}`: View a specific invitation.
+- `DELETE /invitations/{invitation}`: Delete a specific invitation. *(requires user level `a` or `m`)*
+
+#### Panels
+
+- `GET /panels`: List all panels.
+- `POST /panels`: Create a new panel. *(requires user level `a` or `m`)*
+- `GET /panels/{panel}`: View a specific panel. *(requires user access to the panel)*
+- `PATCH /panels/{panel}`: Update a specific panel. *(requires user level `a` or `m` and user access to the panel)*
+- `DELETE /panels/{panel}`: Delete a specific panel. *(requires user level `a` or `m` and user access to the panel)*
+- `GET /panels/{panel}/users`: List all users in a panel.
+- `POST /panels/{panel}/users`: Add a user to a panel. *(requires user level `a`, `m`, or `l` and user access to the panel)*
+- `DELETE /panels/{panel}/users/{user}`: Remove a user from a panel. *(requires user level `a`, `m`, or `l` and user access to the panel)*
+
+#### Centers
+
+- `GET /centers`: List all centers.
+- `POST /centers`: Create a new center. *(requires user level `a` or `m`)*
+- `GET /centers/{center}`: View a specific center. *(requires user access to the center)*
+- `PATCH /centers/{center}`: Update a specific center. *(requires user level `a` or `m` and user access to the center)*
+- `DELETE /centers/{center}`: Delete a specific center. *(requires user level `a` or `m` and user access to the center)*
+
+#### Tests
+
+- `GET /centers/{center}/tests`: List all tests in a center. *(requires user access to the center)*
+- `POST /centers/{center}/tests`: Create a new test. *(requires user level `a`, `m`, or `l` and user access to the center)*
+- `GET /centers/{center}/tests/{test}`: View a specific test. *(requires user access to the test and the center)*
+- `DELETE /centers/{center}/tests/{test}`: Delete a specific test. *(requires user level `a`, `m`, or `l` and user access to the test and the center)*
+- `GET /centers/{center}/tests/{test}/report`: Download the public marks report for a test.
+- `GET /centers/{center}/tests/{test}/marks`: List all marks for a test. *(requires user level `a`, `m`, or `l` and user access to the test and the center)*
+- `GET /centers/{center}/tests/{test}/marks/my`: View the marks for the current user.
+- `POST /centers/{center}/tests/{test}/marks`: Add marks to a test.
+- `GET /centers/{center}/tests/{test}/marks/of/{student}`: View a specific student's marks for a test.
+- `DELETE /centers/{center}/tests/{test}/marks/of/{student}`: Delete a specific student's marks for a test.
+
+## Middleware
+
+- **auth:sanctum**: Ensures the user is authenticated.
+- **checkUserLevel**: Ensures the user has the appropriate level (`a` for admin, `m` for manager, `l` for leader).
+- **checkUserAccessTo**: Ensures the user has access to the specified resource (e.g., panel, center).
+- **checkHasRelation**: Ensures the specified relationship exists between resources (e.g., test and center).
+
+## Installation
+
+1. Clone the repository.
+2. Run `composer install`.
+3. Set up your `.env` file.
+4. Run `php artisan migrate` to set up the database.
+5. Run `php artisan serve` to start the development server.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Feel free to submit issues and pull requests. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+[MIT](LICENSE)
